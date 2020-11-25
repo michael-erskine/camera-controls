@@ -91,6 +91,7 @@ export class CameraControls extends EventDispatcher {
 	minDistance = 0;
 	maxDistance = Infinity;
 	infinityDolly = false;
+	enableWheelDollyTransition = false
 
 	minZoom = 0.01;
 	maxZoom = Infinity;
@@ -302,13 +303,13 @@ export class CameraControls extends EventDispatcher {
 
 			};
 
-			const dollyInternal = ( delta: number, x: number, y : number ): void => {
+			const dollyInternal = ( delta: number, x: number, y : number, enableWheelDollyTransition: boolean = false ): void => {
 
 				const dollyScale = Math.pow( 0.95, - delta * this.dollySpeed );
 				const distance = this._sphericalEnd.radius * dollyScale;
 				const prevRadius = this._sphericalEnd.radius;
 
-				this.dollyTo( distance );
+				this.dollyTo( distance, enableWheelDollyTransition );
 
 				if ( this.infinityDolly && distance < this.minDistance ) {
 
@@ -465,7 +466,7 @@ export class CameraControls extends EventDispatcher {
 
 					case ACTION.DOLLY: {
 
-						dollyInternal( - delta, x, y );
+						dollyInternal( - delta, x, y, this.enableWheelDollyTransition );
 						break;
 
 					}

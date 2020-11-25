@@ -193,6 +193,7 @@
 	        _this.minDistance = 0;
 	        _this.maxDistance = Infinity;
 	        _this.infinityDolly = false;
+	        _this.enableWheelDollyTransition = false;
 	        _this.minZoom = 0.01;
 	        _this.maxZoom = Infinity;
 	        _this.dampingFactor = 0.05;
@@ -298,11 +299,12 @@
 	                var phi = PI_2 * _this.polarRotateSpeed * deltaY / elementRect_1.w;
 	                _this.rotate(theta, phi, true);
 	            };
-	            var dollyInternal_1 = function (delta, x, y) {
+	            var dollyInternal_1 = function (delta, x, y, enableWheelDollyTransition) {
+	                if (enableWheelDollyTransition === void 0) { enableWheelDollyTransition = false; }
 	                var dollyScale = Math.pow(0.95, -delta * _this.dollySpeed);
 	                var distance = _this._sphericalEnd.radius * dollyScale;
 	                var prevRadius = _this._sphericalEnd.radius;
-	                _this.dollyTo(distance);
+	                _this.dollyTo(distance, enableWheelDollyTransition);
 	                if (_this.infinityDolly && distance < _this.minDistance) {
 	                    _this._camera.getWorldDirection(_v3A);
 	                    _this._targetEnd.add(_v3A.normalize().multiplyScalar(prevRadius));
@@ -391,7 +393,7 @@
 	                        break;
 	                    }
 	                    case ACTION.DOLLY: {
-	                        dollyInternal_1(-delta, x, y);
+	                        dollyInternal_1(-delta, x, y, _this.enableWheelDollyTransition);
 	                        break;
 	                    }
 	                    case ACTION.ZOOM: {

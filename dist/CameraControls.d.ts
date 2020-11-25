@@ -11,6 +11,7 @@ export declare class CameraControls extends EventDispatcher {
     minDistance: number;
     maxDistance: number;
     infinityDolly: boolean;
+    enableWheelDollyTransition: boolean;
     minZoom: number;
     maxZoom: number;
     dampingFactor: number;
